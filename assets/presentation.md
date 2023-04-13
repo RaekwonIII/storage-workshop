@@ -35,12 +35,9 @@ style: |
 
 </span>
 
-<span class=subtitle>
+![](https://media.giphy.com/media/3oTBHcLxPejug/giphy.gif)
 
-### 
-### 
-### 
-### 
+<span class=subtitle>
 
 #### Let's Conquer the Giant Squid!
 
@@ -68,6 +65,16 @@ style: |
 
 <span class=subtitle>
 
+### Quick Subsquid recap
+
+</span>
+
+![h:500](trust-me-2.jpg)
+
+---
+
+<span class=subtitle>
+
 ### Indexing middleware
 
 </span>
@@ -82,7 +89,6 @@ style: |
 </span>
 
 ---
-
 
 <span class=subtitle>
 
@@ -171,95 +177,6 @@ style: |
 ###### **Aquarium** - hosted service
 
 ---
-
-<!-- _color: #105EFB -->
-<span class="subtitle">
-
-### From schema...
-</span>
-
-```graphql
-type Owner @entity {
-  id: ID!
-  ownedTokens: [Token!]! @derivedFrom(field: "owner")
-  balance: BigInt
-}
-```
-
----
-<!-- _color: #105EFB -->
-
-<span class="subtitle">
-
-####
-#### ...To Models
-</span>
-
-```typescript
-@Entity_()
-export class Owner {
-  constructor(props?: Partial<Owner>) {
-    Object.assign(this, props)
-  }
-
-  @PrimaryColumn_()
-  id!: string
-
-  @OneToMany_(() => Token, e => e.owner)
-  ownedTokens!: Token[]
-
-  @Column_("numeric", {transformer: marshal.bigintTransformer, nullable: true})
-  balance!: bigint | undefined | null
-}
-
-```
-
----
-<!-- _color: #105EFB -->
-
-<span class="subtitle">
-
-### From ABI...
-</span>
-
-```json
-[
-  // ...
-  {
-    "inputs": [
-      { "internalType": "address", "name": "to", "type": "address" },
-      { "internalType": "uint256", "name": "tokenId", "type": "uint256" }
-    ],
-    "name": "approve",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  // ...
-]
-```
-
----
-<!-- _color: #105EFB -->
-
-<span class="subtitle">
-
-### …to TypeScript
-</span>
-
-```typescript
-export const functions = {
-    // ...
-    approve: new Func<[to: string, tokenId: ethers.BigNumber], {to: string, tokenId: ethers.BigNumber}, []>(
-        abi, '0x095ea7b3'
-    ),
-    // ...
-}
-
-const { _name } = functions.approve.decode(transaction.input);
-```
-
----
 <!-- _color: #105EFB -->
 
 <span class="subtitle">
@@ -275,46 +192,32 @@ sqd deploy .
 Visit [app.subsquid.io](https://app.subsquid.io/)
 
 ---
-<!-- _color: #105EFB -->
-
-<span class="subtitle">
-
-### Resources
-
-</span>
-
-Docs [docs.subsquid.io](https://docs.subsquid.io)
-GitHub [github.com/subsquid/](https://github.com/subsquid/)
-YouTube [youtube.com/c/subsquid](https://www.youtube.com/channel/@subsquid)
-Discord [discord.gg/subsquid](https://discord.gg/subsquid)
-Telegram [t.me/HydraDevs](https://t.me/HydraDevs)
-Medium [medium.com/subsquid](https://medium.com/subsquid)
-
----
 
 <!-- .slide: data-background="https://i.imgur.com/4P35oA6.png" -->
 
 <span class="subtitle">
 
-# Giant Squids can be scary
-
-</span>
-
-![](https://media.giphy.com/media/3oTBHcLxPejug/giphy.gif)
-
----
-
-<!-- .slide: data-background="https://i.imgur.com/4P35oA6.png" -->
-
-<span class="subtitle">
-
-# ...but they mean well
+# Giant Squid is not that scary
 
 </span>
 
 ### [Let's dive!](https://github.com/subsquid-labs/giant-squid-stats/blob/feat/inflation-and-circulation/schema.graphql)
 
 ![](https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExNTg0MWVhNjYyYjRjNjA5NGQ1ZTI4ZjkyZmJhNDg2OWMzMzRlNjFlZSZjdD1n/Ihaalp9a2xqfYiWmzo/giphy.gif)
+
+---
+
+<!-- .slide: data-background="https://i.imgur.com/4P35oA6.png" -->
+
+<span class="subtitle">
+
+# Let's talk bounties! 🤑
+
+</span>
+
+* [Data validation tool for Giant Squid](https://github.com/subsquid/bounties/issues/7)
+* [Status React component for Giant Squid APIs](https://github.com/subsquid/bounties/issues/8)
+* [New Giant Squid API: Delegate account -> Delegators (proxies)](https://github.com/subsquid/bounties/issues/9)
 
 ---
 
@@ -534,20 +437,6 @@ sqd serve
 
 <span class="subtitle">
 
-# What's next?
-
-</span>
-
-### Proxies, proxies everywhere
-
-![](https://media.giphy.com/media/xT9C25UNTwfZuk85WP/giphy-downsized-large.gif)
-
----
-
-<!-- .slide: data-background="https://i.imgur.com/4P35oA6.png" -->
-
-<span class="subtitle">
-
 # Proxy accounts
 
 ### [From Polkadot docs](https://wiki.polkadot.network/docs/learn-proxies)
@@ -565,23 +454,38 @@ sqd serve
 
 <span class="subtitle">
 
-# Thank you 🦑
+# What's next?
 
 </span>
 
-Follow the project on GitHub
-https://github.com/subsquid/squid
+### Proxies, proxies everywhere
 
-![](https://media.giphy.com/media/SVz8HyYrXdJyE/giphy.gif)
+![](https://media.giphy.com/media/xT9C25UNTwfZuk85WP/giphy-downsized-large.gif)
 
-Give us a ⭐, more Alpha coming soon™️
+In all seriousness, though: **performance**
+
+---
+<!-- .slide: data-background="https://i.imgur.com/4P35oA6.png" -->
+
+<span class="subtitle">
+
+# Delivery method
+
+</span>
+
+### TBD 🤓
+
+- GS is under development, code can vary a lot
+- Can start with an independent squid
+- If successful, we will work together on integrating it
+
 
 ---
 <!-- _color: #105EFB -->
 
 <span class="subtitle">
 
-### Shameless plug
+## Resources
 
 </span>
 
@@ -591,3 +495,22 @@ Give us a ⭐, more Alpha coming soon™️
 * GitHub [github.com/subsquid/](https://github.com/subsquid/)
 * Discord [discord.gg/subsquid](https://discord.gg/subsquid)
 * Telegram [t.me/HydraDevs](https://t.me/HydraDevs)
+
+A.K.A.: shameless plug
+
+---
+
+<!-- .slide: data-background="https://i.imgur.com/4P35oA6.png" -->
+
+<span class="subtitle">
+
+# Thank you 🦑
+
+</span>
+
+Follow the project on GitHub
+https://github.com/subsquid/squid
+
+![](https://media.giphy.com/media/jLKvwWHIXUS4/giphy.gif)
+
+Give us a ⭐, more Alpha coming soon™️
