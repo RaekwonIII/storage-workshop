@@ -11,6 +11,7 @@ import { In } from "typeorm";
 import { Account, Transfer } from "./model";
 import { BalancesTransferEvent } from "./types/events";
 import { BalancesAccountStorage } from "./types/storage";
+import { AccountData } from "./types/v1050";
 
 const processor = new SubstrateBatchProcessor()
   .setDataSource({
@@ -57,9 +58,9 @@ processor.run(new TypeormDatabase(), async (ctx) => {
     let { id, blockNumber, timestamp, extrinsicHash, amount, fee } = t;
 
     let from = getAccount(accounts, t.from);
-    from.balance = accountsData.get(from.id) || 0n
+    from.balance = accountsData?.get(from.id) || 0n
     let to = getAccount(accounts, t.to);
-    to.balance = accountsData.get(to.id) || 0n
+    to.balance = accountsData?.get(to.id) || 0n
 
     transfers.push(
       new Transfer({
@@ -142,9 +143,13 @@ async function getAccountBalances(ctx: Ctx, ownersIds: Set<string>) {
   );
   const ownerAddresses = [...ownersIds];
   const ownerUintArrays = ownerAddresses.map(
-    (x) => new Uint8Array(decodeHex(x))
+    (x) => new Uint8Array(ss58.codec("kusama").decode(x))
   );
-  const accountsData = await storage.asV1050.getMany(ownerUintArrays);
+  let accountsData: AccountData[] = [];
+  if (storage.isV1050) {
+    accountsData = await storage.asV1050.getMany(ownerUintArrays);
 
-  return new Map(ownerAddresses.map((v, i) => [v, accountsData[i].free]));
+    return new Map(ownerAddresses.map((v, i) => [v, accountsData[i].free]));
+  }
+  
 }

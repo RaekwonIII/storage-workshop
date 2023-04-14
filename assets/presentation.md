@@ -334,8 +334,10 @@ sqd typegen
 async function getAccountBalances(ctx: Ctx, ownersIds: Set<string>) {
   const storage = new BalancesAccountStorage(ctx, ctx.blocks[ctx.blocks.length -1].header);
   const ownerAddresses = [...ownersIds]
-  const ownerUintArrays = ownerAddresses.map((x) => new Uint8Array(decodeHex(x)));
-  const accountsData = await storage.asV1050.getMany(ownerUintArrays);
+  const ownerUintArrays = ownerAddresses.map((x) => new Uint8Array(ss58.codec("kusama").decode(x));
+  let accountsData: AccountData[] = [];
+  if (storage.isV1050) {
+    accountsData = await storage.asV1050.getMany(ownerUintArrays);
 
   return new Map(ownerAddresses.map((v, i) => [v, accountsData[i].free]))
 }
@@ -356,10 +358,10 @@ const accountsData = await getAccountBalances(ctx, accountIds);
 for (let t of transfersData) {
   let { id, blockNumber, timestamp, extrinsicHash, amount, fee } = t;
 
-  let from = getAccount(accounts, t.from);
-  from.balance = accountsData.get(from.id) || 0n
-  let to = getAccount(accounts, t.to);
-  to.balance = accountsData.get(to.id) || 0n
+    let from = getAccount(accounts, t.from);
+    from.balance = accountsData?.get(from.id) || 0n
+    let to = getAccount(accounts, t.to);
+    to.balance = accountsData?.get(to.id) || 0n
   // ...
 }
 ```
