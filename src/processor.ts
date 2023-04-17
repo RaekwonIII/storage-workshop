@@ -20,6 +20,7 @@ const processor = new SubstrateBatchProcessor()
 
     // Use archive created by archive/docker-compose.yml
     archive: lookupArchive("kusama", { release: "FireSquid" }),
+    chain: "wss://kusama-rpc.polkadot.io"
   })
   .addEvent("Balances.Transfer", {
     data: {
